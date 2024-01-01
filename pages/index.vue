@@ -1,41 +1,60 @@
 <template>
-  <RadioGroup default-value="astra2018" v-model="selectedCatalogId" class="flex flex-row">
-    <div class="flex items-center space-x-2">
-      <RadioGroupItem id="r1" value="astra2018"/>
-      <Label for="r1">Astra 2018</Label>
-    </div>
-    <div class="flex items-center space-x-2">
-      <RadioGroupItem id="r2" value="astra2023"/>
-      <Label for="r2">Astra 2023</Label>
-    </div>
-    <div class="flex items-center space-x-2">
-      <RadioGroupItem id="r3" value="nobel"/>
-      <Label for="r3">Nobel</Label>
-    </div>
-  </RadioGroup>
+  <div class="min-h-screen">
+    <div class="flex flex-col md:flex-row md:space-x-6">
+      <div class="order-last mt-10 space-y-2 md:order-1 md:mt-0 md:w-1/2">
+        <RadioGroup default-value="astra2018" v-model="selectedCatalogId" class="flex flex-row">
+          <div class="flex items-center space-x-2">
+            <RadioGroupItem id="r1" value="astra2018"/>
+            <Label for="r1">Astra 2018</Label>
+          </div>
+          <div class="flex items-center space-x-2">
+            <RadioGroupItem id="r2" value="astra2023"/>
+            <Label for="r2">Astra 2023</Label>
+          </div>
+          <div class="flex items-center space-x-2">
+            <RadioGroupItem id="r3" value="nobel"/>
+            <Label for="r3">Nobel</Label>
+          </div>
+        </RadioGroup>
 
-  <Button
-    v-for="quickSearchOption in quickSearchButtons"
-    variant="outline" @click="searchText = quickSearchOption.searchKey">
-    {{ quickSearchOption.title }}
-  </Button>
+        <div class="py-1 flex flex-row flex-wrap gap-1">
+          <Button
+            v-for="quickSearchOption in quickSearchButtons"
+            variant="outline"
+            @click="searchText = quickSearchOption.searchKey">
+            {{ quickSearchOption.title }}
+          </Button>
+        </div>
 
-  <Input type="text" placeholder="Search for Implant Parts" v-model="searchText" />
+        <Input type="text" placeholder="Search for Implant Parts" v-model="searchText" />
 
-  <ul>
-    <li v-for="implantItem in searchResults">
-      <button>
-        <span class="flex-1">REF: {{implantItem.referenceNumber}} - {{implantItem.title}}</span>
-      </button>
-    </li>
-  </ul>
+        <ul>
+          <li v-for="implantItem in searchResults">
+            <Button
+              class="bg-transparent flex w-full flex-row items-center space-x-2 rounded-md p-2 text-left hover:bg-slate-100 active:bg-slate-200 text-slate-900"
+              @click="addItemToOrder(implantItem.referenceNumber)">
+              <span class="block flex-none rounded-md p-[0.125rem] bg-green-700">
+                <Plus class="text-white" :size="16" />
+              </span>
+
+              <span class="flex-1">REF: {{implantItem.referenceNumber}} - {{implantItem.title}}</span>
+            </Button>
+          </li>
+        </ul>
+      </div>
+      <div class="order-2 flex-1">
+        <CPRSOrderText :order="order" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { Plus } from 'lucide-vue-next';
 import MiniSearch from 'minisearch'
-import astra2018Catalog from '~/lib/data/astra2018.json'
-import astra2023Catalog from '~/lib/data/astra2023.json'
-import nobelCatalog from '~/lib/data/nobel.json'
+import astra2018Catalog from '~/utils/data/astra2018.json'
+import astra2023Catalog from '~/utils/data/astra2023.json'
+import nobelCatalog from '~/utils/data/nobel.json'
 
 const searchText = ref('')
 const selectedCatalogId = ref('astra2018')
@@ -126,4 +145,8 @@ const searchResults = computed(() => {
   return miniSearch.search(searchText.value, { fuzzy: 0.2 });
 });
 
+const order: Ref<PartNumber[]> = ref([])
+function addItemToOrder(itemReferenceNumber: PartNumber) {
+  order.value.push(itemReferenceNumber);
+}
 </script>
