@@ -30,15 +30,22 @@
 
         <ul>
           <li v-for="implantItem in searchResults">
-            <Button
-              class="bg-transparent flex w-full flex-row items-center space-x-2 rounded-md p-2 text-left hover:bg-slate-100 active:bg-slate-200 text-slate-900"
-              @click="addItemToOrder(implantItem.referenceNumber)">
-              <span class="block flex-none rounded-md p-[0.125rem] bg-green-700">
+            <div class="bg-transparent flex w-full flex-row items-center space-x-2 rounded-md p-2 text-left text-slate-900">
+              <Button 
+                class="rounded-md p-[0.125rem] bg-green-700 h-full"
+                @click="addItemToOrder(implantItem.referenceNumber)">
                 <Plus class="text-white" :size="16" />
-              </span>
+              </Button>
+
+              <Button 
+                :class="{ 'invisible': !itemInOrder(implantItem.referenceNumber) }"
+                class="block flex-none rounded-md p-[0.125rem] bg-red-700 h-full"
+                @click="removeItemFromOrder(implantItem.referenceNumber)">
+                <Minus class="text-white" :size="16" />
+              </Button>
 
               <span class="flex-1">REF: {{implantItem.referenceNumber}} - {{implantItem.title}}</span>
-            </Button>
+            </div>
           </li>
         </ul>
       </div>
@@ -50,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { Plus } from 'lucide-vue-next';
+import { Plus, Minus } from 'lucide-vue-next';
 import MiniSearch from 'minisearch'
 import astra2018Catalog from '~/utils/data/astra2018.json'
 import astra2023Catalog from '~/utils/data/astra2023.json'
@@ -149,4 +156,14 @@ const order: Ref<PartNumber[]> = ref([])
 function addItemToOrder(itemReferenceNumber: PartNumber) {
   order.value.push(itemReferenceNumber);
 }
+
+function removeItemFromOrder(itemReferenceNumber: PartNumber) {
+  const index = order.value.indexOf(itemReferenceNumber);
+  order.value.splice(index, 1);
+}
+
+function itemInOrder(itemReferenceNumber: PartNumber) {
+  return order.value.includes(itemReferenceNumber);
+}
+
 </script>
