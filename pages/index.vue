@@ -137,16 +137,18 @@ const describedImplantParts = computed(() => {
 	});
 })
 
-let miniSearch = new MiniSearch({
+let miniSearch = reactive(new MiniSearch({
   fields: ['referenceNumber', 'title', 'description'], // fields to index for full-text search
   storeFields: ['referenceNumber', 'title', 'description'], // fields to return with search results
   idField: 'referenceNumber'
+}));
+
+watch(describedImplantParts, () => {
+  miniSearch.removeAll();
+	miniSearch.addAll(describedImplantParts.value);
 });
 
 const searchResults = computed(() => {
-  miniSearch.removeAll();
-	miniSearch.addAll(describedImplantParts.value);
-
   return miniSearch.search(searchText.value, { fuzzy: 0.2 });
 });
 
