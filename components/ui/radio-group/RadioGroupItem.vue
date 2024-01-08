@@ -5,7 +5,7 @@ import {
   type RadioGroupItemProps,
 } from 'radix-vue'
 import { Circle } from 'lucide-vue-next'
-import { cn } from '~/lib/utils'
+import { cn } from '@/lib/utils'
 
 const props = defineProps<RadioGroupItemProps & { class?: string }>()
 </script>
@@ -15,7 +15,7 @@ const props = defineProps<RadioGroupItemProps & { class?: string }>()
     v-bind="props"
     :class="
       cn(
-        'aspect-square h-4 w-4 rounded-full cursor-pointer flex justify-center items-center border border-slate-900 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-50',
+        'aspect-square h-4 w-4 rounded-full cursor-pointer flex justify-center items-center border border-primary disabled:cursor-not-allowed disabled:opacity-50',
         props.class,
       )
     "
@@ -23,7 +23,7 @@ const props = defineProps<RadioGroupItemProps & { class?: string }>()
     <RadioGroupIndicator
       :class="cn('flex items-center justify-center', props.class)"
     >
-      <Circle class="w-2.5 h-2.5 text-blue-700 dark:text-slate-50 fill-current" />
+      <Circle class="w-2.5 h-2.5 text-primary fill-current" />
     </RadioGroupIndicator>
   </RadioGroupItem>
 </template>

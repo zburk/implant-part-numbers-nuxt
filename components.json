@@ -3,9 +3,9 @@
   "typescript": true,
   "tailwind": {
     "config": "tailwind.config.js",
-    "css": "assets/css/main.css",
+    "css": "assets/css/tailwind.css",
     "baseColor": "slate",
-    "cssVariables": false
+    "cssVariables": true
   },
   "framework": "nuxt",
   "aliases": {

@@ -19,8 +19,8 @@
 
         <div class="py-1 flex flex-row flex-wrap gap-1">
           <Button
+            variant="default"
             v-for="quickSearchOption in quickSearchButtons"
-            variant="outline"
             @click="searchText = quickSearchOption.searchKey">
             {{ quickSearchOption.title }}
           </Button>
