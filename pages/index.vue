@@ -143,12 +143,10 @@ let miniSearch = new MiniSearch({
   idField: 'referenceNumber'
 });
 
-watch(describedImplantParts, () => {
+const searchResults = computed(() => {
   miniSearch.removeAll();
 	miniSearch.addAll(describedImplantParts.value);
-}, { immediate: true })
 
-const searchResults = computed(() => {
   return miniSearch.search(searchText.value, { fuzzy: 0.2 });
 });
 
