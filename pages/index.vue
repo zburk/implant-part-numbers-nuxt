@@ -146,7 +146,7 @@ let miniSearch = reactive(new MiniSearch({
 watch(describedImplantParts, () => {
   miniSearch.removeAll();
 	miniSearch.addAll(describedImplantParts.value);
-});
+}, { immediate: true });
 
 const searchResults = computed(() => {
   return miniSearch.search(searchText.value, { fuzzy: 0.2 });
